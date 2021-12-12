@@ -64,14 +64,26 @@ let persons = [
   app.post('/api/persons', (request, response) => {
     const p = request.body
 
-    const person = {
+    const nPerson = {
       name: p.name,
       number: p.number,
       id: getId()
     }
+    const currentName = persons.filter(per => per.name === nPerson.name)
 
-    persons = persons.concat(person)
-    response.json(person)
+    if(!p.name || !p.number){
+      return response.status(400).json({
+        error: `a name or number is missing`
+      })
+    }  
+    if(currentName[0] !== undefined) {
+      return response.status(400).json({
+        error: `name must be unique`
+      })
+    }
+
+    persons = persons.concat(nPerson)
+    response.json(persons)
   })
 
 
