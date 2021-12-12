@@ -56,6 +56,24 @@ let persons = [
     response.status(204).end()
   })
 
+  const getId = () => {
+    const lastId = persons.length > 0 ? Math.floor(Math.random() * 1000) : 0
+
+  return lastId + 1
+  }
+  app.post('/api/persons', (request, response) => {
+    const p = request.body
+
+    const person = {
+      name: p.name,
+      number: p.number,
+      id: getId()
+    }
+
+    persons = persons.concat(person)
+    response.json(person)
+  })
+
 
 const PORT = 3001
 app.listen(PORT)
