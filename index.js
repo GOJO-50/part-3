@@ -35,6 +35,7 @@ let persons = [
       tokens.status(req, res),
       tokens.res(req, res, 'content-length'), '-',
       tokens['response-time'](req, res), 'ms',
+      JSON.stringify(req.body)
     ].join(' ')
   }))
 
