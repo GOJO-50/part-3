@@ -1,12 +1,12 @@
 const { request, response } = require('express')
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')
+
 
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+
 
 let persons = [
   { 
@@ -78,7 +78,7 @@ let persons = [
   }
   app.post('/api/persons', (request, response) => {
     const p = request.body
-
+     console.log(p);
     const nPerson = {
       name: p.name,
       number: p.number,
@@ -96,9 +96,7 @@ let persons = [
         error: `name must be unique`
       })
     }
-
-    persons = persons.concat(nPerson)
-    response.json(persons)
+    response.json(nPerson)
   })
 
 
