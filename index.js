@@ -98,7 +98,8 @@ let persons = [
         error: `name must be unique`
       })
     }
-    response.json(nPerson)
+   const pers = persons.concat(nPerson) 
+    response.json(pers)
   })
 
 
