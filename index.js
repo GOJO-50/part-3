@@ -84,24 +84,28 @@ let persons = [
   app.post('/api/persons', (request, response) => {
     const p = request.body
      console.log(p);
-    const nPerson = {
-      name: p.name,
-      number: p.number,
-      id: getId()
-    }
-    const currentName = persons.filter(per => per.name === nPerson.name)
 
+    const person = new Person ({
+        name: p.name,
+        number: p.number,
+      }
+    )
+    const currentName = persons.filter(per => per.name === person.name)
+    
     if(!p.name || !p.number){
       return response.status(400).json({
         error: `a name or number is missing`
       })
     }  
+    
     if(currentName[0] !== undefined) {
       return response.status(400).json({
         error: `name must be unique`
       })
     }
-    response.json(nPerson)
+    person.save().then(addedPerson => {
+      response.json(addedPerson)
+    })
   })
 
 
