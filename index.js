@@ -3,7 +3,7 @@ const { request, response } = require('express')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const Person = require('./models/person')
+const Person = require('./models/person.js')
 
 const app = express()
 app.use(express.json())
@@ -59,21 +59,25 @@ let persons = [
     `)
   })
 
-  app.get('/api/persons/:id', (request, response)=>{
-    Person.findById(request.params.id).then(person => {
+  app.get('/api/persons/:id', (request, response, next)=>{
+    Person.findById(request.params.id)
+    .then(person => {
       if (person){
         response.json(person)
       }else{
         response.status(404).end()
       }
     })
-    
+    .catch(error=> next(error))
   })
 
-  app.delete('/api/persons/:id', (request, response)=>{
-    const id = Number(request.params.id)
-    persons = persons.filter(p => p.id === id)
-    response.status(204).end()
+  app.delete('/api/persons/:id', (request, response, next)=>{
+    Person.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error =>
+      next(error))
   })
 
   const getId = () => {
@@ -113,3 +117,4 @@ const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
