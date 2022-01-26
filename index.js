@@ -111,7 +111,19 @@ let persons = [
       response.json(addedPerson)
     })
   })
+  app.put('/api/persons/:id', (request, response, next) =>{
+    const p = request.body
 
+    const person = {
+      name: p.name,
+      number: p.number
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, {new: true }).then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
+  })
 
 const PORT = process.env.PORT 
 app.listen(PORT, () => {
