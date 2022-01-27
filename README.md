@@ -1,3 +1,3 @@
 # part-3
 
-Deployed app link: https://still-brushlands-10214.herokuapp.com/api/persons
+Deployed app link: https://still-brushlands-10214.herokuapp.com

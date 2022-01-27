@@ -45,6 +45,10 @@ let persons = [
     ].join(' ')
   }))
 
+  app.get('/', (request, response) => {
+    response.send('<h1>Hello World!-</h1>')
+})
+
   app.get('/api/persons', (request, response) =>{
     Person.find({}).then(person =>{
       response.json(person)
@@ -54,19 +58,21 @@ let persons = [
   app.get('/info', (request, response)=> {
     const size = persons.length
     const time = new Date()
+
     response.send(`<p>Phonebook has info for ${size} people</p>
     <p>${time}</p>
     `)
   })
 
   app.get('/api/persons/:id', (request, response, next)=>{
+
     Person.findById(request.params.id)
     .then(person => {
       if (person){
         response.json(person)
       }else{
         response.status(404).end()
-      }
+      }      
     })
     .catch(error=> next(error))
   })
@@ -80,11 +86,6 @@ let persons = [
       next(error))
   })
 
-  const getId = () => {
-    const lastId = persons.length > 0 ? Math.floor(Math.random() * 1000) : 0
-
-  return lastId + 1
-  }
   app.post('/api/persons', (request, response) => {
     const p = request.body
      console.log(p);
@@ -113,6 +114,7 @@ let persons = [
   })
   app.put('/api/persons/:id', (request, response, next) =>{
     const p = request.body
+  Person.findById(request.params.id)
 
     const person = {
       name: p.name,
